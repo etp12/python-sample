@@ -1,0 +1,52 @@
+<html>
+<head>
+  <!-- Load the jquery library from Google's CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<script>
+//wait until document has been loaded
+$(document).ready(function() {
+  //when the element with the id 'button' has been clicked, send the respond
+  $('#button').click(function(){
+    $.ajax({
+      url: 'http://localhost:5000',
+      type: 'post',
+
+      //read the data from the input box with .val() and turn it into JSON
+      data: JSON.stringify({
+        'composerName': $('#composerName').val(),
+      }),
+
+      //tell the server we are sending json
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      dataType: 'json',
+
+      //on success, take the data from the server and load it into the <p>
+      success: function (data) {
+        $('#result').text('composer: ' + data.composer + ' testdata1: ' + data.testdata1);
+      },
+      failure: function(error) {
+        console.log(error);
+      }
+    });
+  });
+});
+</script>
+
+<body>
+<!-- Insert a text box for reading the composer name  -->
+Composer Name: <input type="text" id="composerName"/>
+<!-- Have a button to trigger the request-->
+<input type="button" id="button" value="Submit">
+
+<br>
+<br>
+<!-- p tag to insert results into-->
+Result: <p id="result"> </p>
+</body>
+
+
+</html>
